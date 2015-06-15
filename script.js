@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 0.0.1
+// @version 0.0.2
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -116,3 +116,5 @@ function checkExists(element) {
 }
 
 var thingTimer = window.setInterval(doTheThing, 1000);
+addCSS();
+addToggleButton();
