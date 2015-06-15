@@ -2,15 +2,12 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 0.0.3
+// @version 1.0.0
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
 // @downloadURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
 // ==/UserScript==
-
-var isAlreadyRunning = false;
-var enabled = false;
 
 var CSS_ID = "saltybetting-css";
 var TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container";
@@ -18,9 +15,12 @@ var TOGGLE_BUTTON_ID = "saltybetting-toggle-button";
 
 var cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css";
 
+var isAlreadyRunning = false;
+var enabled = false;
+
 var buttonHTML = "<div class=\"onoffswitch\">" + 
 "<input onchange=\"toggleSaltyBettingState()\" type=\"checkbox\" name=\"onoffswitch\" class=\"onoffswitch-checkbox\" id=\""+TOGGLE_BUTTON_ID+"\">" +
-    "<label class=\"onoffswitch-label\" for=\"saltybetting-toggle\">" +
+    "<label class=\"onoffswitch-label\" for=\""+TOGGLE_BUTTON_ID+"\">" +
         "<span class=\"onoffswitch-inner\"></span>" +
         "<span class=\"onoffswitch-switch\"></span>" +
     "</label>" +
@@ -52,15 +52,25 @@ function doTheThing() {
 		if(!(bettingClosed() || playerHasBet())) {
             if(isTournamentMode()) {
                 handleTournament();
-            }
+            }else{
+				handleNormalMode();
+			}
         }
 		
 		isAlreadyRunning = false;
 	}
 }
 
+function handleNormalMode(){
+// TODO
+}
+
 function handleTournament() {
-    console.log("tournament mode - bets open and no bet by player yet");
+    console.log("Tournament mode - bets open and no bet by player yet");
+	console.log("Choosing random side");
+	var side = getRandomSide();
+	console.log("Side : " + side);
+	allIn(side);
 }
 
 function addCSS(){
@@ -95,7 +105,7 @@ function bet(amount, side){
 		console.log("Invalid side : " + side);
 		return;
 	}
-	console.log("Bet " + amount + "$ on " + side); 
+	console.log("Betting " + amount + "$ on " + side); 
 	
 }
 
