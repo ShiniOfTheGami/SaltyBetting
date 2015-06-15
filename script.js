@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 0.0.2
+// @version 0.0.3
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -13,13 +13,14 @@ var isAlreadyRunning = false;
 var enabled = false;
 
 var CSS_ID = "saltybetting-css";
+var TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container";
 var TOGGLE_BUTTON_ID = "saltybetting-toggle-button";
 
 var cssURL = "https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.css";
 
 var buttonHTML = "<div class=\"onoffswitch\">" + 
-"<input type=\"checkbox\" name=\"onoffswitch\" class=\"onoffswitch-checkbox\" id=\"myonoffswitch\">" +
-    "<label class=\"onoffswitch-label\" for=\"myonoffswitch\">" +
+"<input onchange=\"toggleSaltyBettingState()\" type=\"checkbox\" name=\"onoffswitch\" class=\"onoffswitch-checkbox\" id=\""+TOGGLE_BUTTON_ID+"\">" +
+    "<label class=\"onoffswitch-label\" for=\"saltybetting-toggle\">" +
         "<span class=\"onoffswitch-inner\"></span>" +
         "<span class=\"onoffswitch-switch\"></span>" +
     "</label>" +
@@ -30,11 +31,21 @@ if(thingTimer){
     window.clearInterval(thingTimer);
 	removeToggleButton();
 	removeCSS();
+	addCSS();
+	addToggleButton();
+}
+
+function toggleSaltyBettingState(){
+	enabled = $('#' + TOGGLE_BUTTON_ID).prop("checked");
+	if(enabled){
+		console.log("Enabled SaltyBetting Script");
+	}else{
+		console.log("Disabled SaltyBetting Script");
+	}
 }
 
 function doTheThing() {
 	if(!enabled){
-		console.log("Script not enabled, returning");
 		return;
 	}
     if(!isAlreadyRunning){
@@ -55,6 +66,7 @@ function handleTournament() {
 }
 
 function addCSS(){
+	console.log("Appending custom CSS");
 	$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\""+cssURL+"\" id=\""+CSS_ID+"\" />");
 }
 
@@ -63,11 +75,12 @@ function removeCSS(){
 }
 
 function addToggleButton(){
-	$("div#nav-menu > ul > li:first-child").before("<li>"+buttonHTML+"</li>");
+	console.log("Appending toggle button");
+	$("div#nav-menu > ul > li:first-child").before("<li id=\""+TOGGLE_BUTTON_CONTAINER_ID+"\">"+buttonHTML+"</li>");
 }
 
 function removeToggleButton(){
-	$("#" + TOGGLE_BUTTON_ID).remove();
+	$("#" + TOGGLE_BUTTON_CONTAINER_ID).remove();
 }
 
 function bet(amount, side){
@@ -97,7 +110,16 @@ function bettingClosed() {
 }
 
 function getRandomSide(){
+	var selection = getRandomNumber(1,2);
+	if(selection === 1){
+		return "red";
+	}else{
+		return "blue";
+	}
+}
 
+function getRandomNumber(min, max){
+	return Math.floor((Math.random() * max) + min);
 }
 
 function playerHasBet() {
@@ -115,6 +137,4 @@ function checkExists(element) {
     return false;
 }
 
-var thingTimer = window.setInterval(doTheThing, 1000);
-addCSS();
-addToggleButton();
+var thingTimer = window.setInterval(doTheThing, 10000);
