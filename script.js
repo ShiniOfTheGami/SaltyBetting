@@ -28,7 +28,7 @@ var buttonHTML = "<div class=\"onoffswitch\">" +
 
 
 if(thingTimer){
-    window.clearInterval(thingTimer);
+	window.clearInterval(thingTimer);
 	removeToggleButton();
 	removeCSS();
 }
@@ -50,12 +50,12 @@ function doTheThing() {
 		isAlreadyRunning = true;
 		
 		if(!(bettingClosed() || playerHasBet())) {
-            if(isTournamentMode()) {
-                handleTournament();
-            }else{
+			if(isTournamentMode()) {
+				handleTournament();
+			}else{
 				handleNormalMode();
 			}
-        }
+		}
 		
 		isAlreadyRunning = false;
 	}
@@ -106,7 +106,6 @@ function bet(amount, side){
 		return;
 	}
 	console.log("Betting " + amount + "$ on " + side); 
-	
 }
 
 function allIn(side){
@@ -114,7 +113,7 @@ function allIn(side){
 }
 
 function bettingClosed() {
-    return betstate === "locked";
+	return betstate === "locked";
 }
 
 function getRandomSide(){
@@ -131,18 +130,18 @@ function getRandomNumber(min, max){
 }
 
 function playerHasBet() {
-    return checkExists('#betconfirm');
+	return checkExists('#betconfirm');
 }
 
 function isTournamentMode() {
-    return checkExists('#tournament-note');
+	return checkExists('#tournament-note');
 }
 
 function checkExists(element) {
-    if($(element).length){
-        return true;
-    }
-    return false;
+	if($(element).length){
+	return true;
+	}
+	return false;
 }
 
 var setup = function(){
