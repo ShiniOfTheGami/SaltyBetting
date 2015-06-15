@@ -55,7 +55,7 @@ function handleTournament() {
 }
 
 function addCSS(){
-	$("body").append("<link type=\"text/css\" href=\""+cssURL+"\" id=\""+CSS_ID+"\" rel=\"stylesheet\">");
+	$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\""+cssURL+"\" id=\""+CSS_ID+"\" />");
 }
 
 function removeCSS(){
@@ -63,7 +63,7 @@ function removeCSS(){
 }
 
 function addToggleButton(){
-
+	$("div#nav-menu > ul > li:first-child").before("<li>"+buttonHTML+"</li>");
 }
 
 function removeToggleButton(){
