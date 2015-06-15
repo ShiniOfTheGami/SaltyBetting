@@ -16,7 +16,7 @@ var CSS_ID = "saltybetting-css";
 var TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container";
 var TOGGLE_BUTTON_ID = "saltybetting-toggle-button";
 
-var cssURL = "https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.css";
+var cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css";
 
 var buttonHTML = "<div class=\"onoffswitch\">" + 
 "<input onchange=\"toggleSaltyBettingState()\" type=\"checkbox\" name=\"onoffswitch\" class=\"onoffswitch-checkbox\" id=\""+TOGGLE_BUTTON_ID+"\">" +
@@ -31,8 +31,6 @@ if(thingTimer){
     window.clearInterval(thingTimer);
 	removeToggleButton();
 	removeCSS();
-	addCSS();
-	addToggleButton();
 }
 
 function toggleSaltyBettingState(){
@@ -137,4 +135,8 @@ function checkExists(element) {
     return false;
 }
 
+var setup = function(){
+	addCSS();
+	addToggleButton();
+}();
 var thingTimer = window.setInterval(doTheThing, 10000);
