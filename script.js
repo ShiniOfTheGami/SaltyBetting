@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.0.2
+// @version 1.0.4
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -17,6 +17,12 @@ var cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css";
 
 var isAlreadyRunning = false;
 var enabled = false;
+
+var lastMatch = {
+	red: "none",
+	blue: "none",
+	winner: "none"
+}
 
 var buttonHTML = "<div class=\"onoffswitch\">" + 
 "<input type=\"checkbox\" name=\"onoffswitch\" class=\"onoffswitch-checkbox\" id=\""+TOGGLE_BUTTON_ID+"\">" +
@@ -47,6 +53,7 @@ function checkBettingStateChange(){
 
 function doTheThing() {
 	checkBettingStateChange();
+	updateLastMatch();
 	if(!enabled){
 		return;
 	}
@@ -141,6 +148,33 @@ function isTournamentMode() {
 	return checkExists('#tournament-note');
 }
 
+function updateLastMatchData(){
+	var winner = getWinner();
+	if(winner === ""){
+		return;
+	}
+	if(lastMatch["red"] === p1n && lastMatch["blue"] === p2n){
+		return;
+	}
+	
+	lastMatch["red"] = p1n;
+	lastMatch["blue"] = p2n;
+	lastMatch["winner"] = winner;
+	console.log("Last Match:");
+	console.log(lastMatch);
+}
+
+function getWinner(){
+	if($('#betstatus').length){
+		var content = $('#betstatus').html();
+		if(content.indexOs("wins!") === -1){
+			var winner = content.split(" wins!")[0];
+			return winner;
+		}
+	}
+	return "";
+}
+
 function checkExists(element) {
 	if($(element).length){
 	return true;
@@ -152,4 +186,4 @@ var setup = function(){
 	addCSS();
 	addToggleButton();
 }();
-var thingTimer = window.setInterval(doTheThing, 10000);
+var thingTimer = window.setInterval(doTheThing, 1000);
