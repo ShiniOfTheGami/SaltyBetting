@@ -167,7 +167,7 @@ function updateLastMatchData(){
 function getWinner(){
 	if($('#betstatus').length){
 		var content = $('#betstatus').html();
-		if(content.indexOs("wins!") === -1){
+		if(content.indexOf("wins!") === -1){
 			var winner = content.split(" wins!")[0];
 			return winner;
 		}
