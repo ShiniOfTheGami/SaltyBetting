@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.0.1
+// @version 1.0.2
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -34,11 +34,14 @@ if(thingTimer){
 }
 
 function checkBettingStateChange(){
+	var previous = enabled;
 	enabled = $('#' + TOGGLE_BUTTON_ID).prop("checked");
-	if(enabled){
-		console.log("Enabled SaltyBetting Script");
-	}else{
-		console.log("Disabled SaltyBetting Script");
+	if(!(previous === enabled)){
+		if(enabled){
+			console.log("Enabled SaltyBetting Script");
+		}else{
+			console.log("Disabled SaltyBetting Script");
+		}
 	}
 }
 
