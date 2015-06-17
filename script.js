@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.0.8
+// @version 1.1.0
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -185,7 +185,17 @@ function updateLastMatchData(){
 	lastMatch["red"] = p1n;
 	lastMatch["blue"] = p2n;
 	lastMatch["winner"] = winner;
-	console.log("Winner: " + winner + " on " + p1n + " vs. " + p2n);
+	console.log("Winner: " + winner + " on " + p1n + " vs. " + p2n + " | ODDS: " + getOdds("both"));
+}
+
+function getOdds(side){
+	if(side == "red"){
+		return p1te;
+	}else if(side == "blue"){
+		return p2te;
+	}else{
+		return p1te + " <> " + p2te;
+	}
 }
 
 function getWinner(){
