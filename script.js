@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.0.6
+// @version 1.0.7
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -12,6 +12,7 @@
 var CSS_ID = "saltybetting-css";
 var TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container";
 var TOGGLE_BUTTON_ID = "saltybetting-toggle-button";
+var REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button";
 
 var cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css";
 
@@ -32,9 +33,12 @@ var buttonHTML = "<div class=\"onoffswitch\">" +
     "</label>" +
 "</div>";
 
+var removeExtraHTMLButton = "<div style=\"color:#4db044;cursor:pointer;\" onclick=\"javascript:$('#sbettorswrapper').remove();$('#stream').remove();$('#chat-wrapper').remove();$('#bottomcontent').width('100%');\">Remove extra HTML</div>";
+
 
 if(thingTimer){
 	window.clearInterval(thingTimer);
+	removeHTMLButton();
 	removeToggleButton();
 	removeCSS();
 }
@@ -102,6 +106,15 @@ function removeToggleButton(){
 	$("#" + TOGGLE_BUTTON_CONTAINER_ID).remove();
 }
 
+function addHTMLButton(){
+	console.log("Appending HTML removal button");
+	$("div#nav-menu > ul > li:first-child").before("<li id=\""+REMOVE_HTML_BUTTON_ID+"\">"+removeExtraHTMLButton+"</li>");
+}
+
+function removeHTMLButton(){
+	$("#" + REMOVE_HTML_BUTTON_ID).remove();
+}
+
 function bet(amount, side){
 	if(bettingClosed()){
 		console.log("Betting is closed, aborting bet!");
@@ -116,7 +129,7 @@ function bet(amount, side){
 		console.log("Invalid side : " + side);
 		return;
 	}
-	console.log("Betting " + amount + "$ on " + side); 
+	console.log("Betting " + amount + "$ on " + side + " : " + getCharacter(side) + " on the match: " + getMatch()); 
 }
 
 function allIn(side){
@@ -125,6 +138,18 @@ function allIn(side){
 
 function bettingClosed() {
 	return betstate === "locked";
+}
+
+function getMatch(){
+	return p1n + " vs." + p2n;
+}
+
+function getCharacter(side){
+	if(side == "red"){
+		return p1n;
+	}else{
+		return p2n;
+	}
 }
 
 function getRandomSide(){
@@ -160,8 +185,7 @@ function updateLastMatchData(){
 	lastMatch["red"] = p1n;
 	lastMatch["blue"] = p2n;
 	lastMatch["winner"] = winner;
-	console.log("Last Match:");
-	console.log(lastMatch);
+	console.log("Winner: " + winner + " on " + p1n + " vs." + p2n);
 }
 
 function getWinner(){
@@ -185,5 +209,6 @@ function checkExists(element) {
 var setup = function(){
 	addCSS();
 	addToggleButton();
+	addHTMLButton();
 }();
 var thingTimer = window.setInterval(doTheThing, 1000);
