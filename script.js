@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.1.0
+// @version 1.1.1
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -137,7 +137,11 @@ function allIn(side){
 }
 
 function bettingClosed() {
-	return betstate === "locked" || (!($('#betstatus').html().indexOf('OPEN')>-1));
+	return betstate === "locked" || !betStateContains("OPEN");
+}
+
+function betStateContains(content){
+	return ($('#betstatus').html().indexOf(content)> -1);
 }
 
 function getMatch(){
@@ -170,7 +174,7 @@ function playerHasBet() {
 }
 
 function isTournamentMode() {
-	return checkExists('#tournament-note');
+	return checkExists('#tournament-note') || checkExists('span#balance.dollar.purpletext');
 }
 
 function updateLastMatchData(){
