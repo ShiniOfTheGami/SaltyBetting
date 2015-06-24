@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.1.1
+// @version 1.1.2
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -17,7 +17,7 @@ var REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button";
 var cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css";
 
 var isAlreadyRunning = false;
-var enabled = false;
+var enabled = getPreferenceBoolean("enableBetting",false);
 
 var lastMatch = {
 	red: "none",
@@ -56,7 +56,6 @@ function checkBettingStateChange(){
 }
 
 function doTheThing() {
-	checkBettingStateChange();
 	updateLastMatchData();
 	if(!enabled){
 		return;
@@ -100,6 +99,18 @@ function removeCSS(){
 function addToggleButton(){
 	console.log("Appending toggle button");
 	$("div#nav-menu > ul > li:first-child").before("<li id=\""+TOGGLE_BUTTON_CONTAINER_ID+"\">"+buttonHTML+"</li>");
+	if(enabled){
+		$("#" + TOGGLE_BUTTON_ID).prop('checked', true);
+	}
+	$("#" + TOGGLE_BUTTON_ID).change(function(){
+		if($(this).is(":checked")){
+			enabled = true;
+			setPreference("enableBetting", true);
+			return;
+		}
+		enabled = false;
+		setPreference("enableBetting", false);
+	});
 }
 
 function removeToggleButton(){
@@ -219,6 +230,33 @@ function checkExists(element) {
 	}
 	return false;
 }
+
+function setPreference(key, value) {
+	try {
+		if (localStorage !== undefined) {
+			localStorage.setItem('steamdb-minigame/' + key, value);
+		}
+	} catch (e) {
+		console.log(e); // silently ignore error
+	}
+}
+
+function getPreference(key, defaultValue) {
+	try {
+		if (localStorage !== undefined) {
+			var result = localStorage.getItem('steamdb-minigame/' + key);
+			return (result !== null ? result : defaultValue);
+		}
+	} catch (e) {
+		console.log(e); // silently ignore error
+		return defaultValue;
+	}
+}
+
+function getPreferenceBoolean(key, defaultValue) {
+	return (getPreference(key, defaultValue.toString()) == "true");
+}
+
 
 var setup = function(){
 	addCSS();
