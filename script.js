@@ -2,38 +2,36 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.1.2
+// @version 1.2.0
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
 // @downloadURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
 // ==/UserScript==
 
-var CSS_ID = "saltybetting-css";
-var TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container";
-var TOGGLE_BUTTON_ID = "saltybetting-toggle-button";
-var REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button";
-
-var cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css";
-
-var isAlreadyRunning = false;
-var enabled = getPreferenceBoolean("enableBetting",false);
-
-var lastMatch = {
+var CSS_ID = "saltybetting-css",
+TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container",
+TOGGLE_BUTTON_ID = "saltybetting-toggle-button",
+REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button",
+cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css",
+isAlreadyRunning = false,
+enabled = getPreferenceBoolean("enableBetting",false),
+hideHTML = getPreferenceBoolean("hideHTML",false),
+lastMatch = {
 	red: "none",
 	blue: "none",
 	winner: "none"
-}
+};
 
-var buttonHTML = "<div class=\"onoffswitch\">" + 
+
+var buttonHTML = "<div class=\"onoffswitch\">" +
 "<input type=\"checkbox\" name=\"onoffswitch\" class=\"onoffswitch-checkbox\" id=\""+TOGGLE_BUTTON_ID+"\">" +
     "<label class=\"onoffswitch-label\" for=\""+TOGGLE_BUTTON_ID+"\">" +
         "<span class=\"onoffswitch-inner\"></span>" +
         "<span class=\"onoffswitch-switch\"></span>" +
     "</label>" +
-"</div>";
-
-var removeExtraHTMLButton = "<div style=\"color:#4db044;cursor:pointer;\" onclick=\"javascript:$('#sbettorswrapper').remove();$('#stream').remove();$('#chat-wrapper').remove();$('#bottomcontent').width('100%');\">Remove extra HTML</div>";
+"</div>",
+removeExtraHTMLButton = "<div style=\"color:#4db044;cursor:pointer;\">Remove extra HTML</div>";
 
 
 if(thingTimer){
@@ -62,7 +60,7 @@ function doTheThing() {
 	}
     if(!isAlreadyRunning){
 		isAlreadyRunning = true;
-		
+
 		if(!(bettingClosed() || playerHasBet())) {
 			if(isTournamentMode()) {
 				handleTournament();
@@ -70,7 +68,7 @@ function doTheThing() {
 				handleNormalMode();
 			}
 		}
-		
+
 		isAlreadyRunning = false;
 	}
 }
@@ -120,6 +118,26 @@ function removeToggleButton(){
 function addHTMLButton(){
 	console.log("Appending HTML removal button");
 	$("div#nav-menu > ul > li:first-child").before("<li id=\""+REMOVE_HTML_BUTTON_ID+"\">"+removeExtraHTMLButton+"</li>");
+	if(hideHTML){
+		$('#' + REMOVE_HTML_BUTTON_ID + " > div").click(function(){
+				window.location.reload(true);
+				setPreference("hideHTML", false);
+		});
+		$('#' + REMOVE_HTML_BUTTON_ID + " > div").text("Re-add extra html");
+		removeExtraHTML();
+	}else{
+		$('#' + REMOVE_HTML_BUTTON_ID + " > div").click(function(){
+			setPreference("hideHTML", true);
+			removeExtraHTML();
+			$(this).text("Re-add extra html");
+			$(this).unbind("click");
+			$(this).click(function(){
+					window.location.reload(true);
+					setPreference("hideHTML", false);
+			});
+		});
+	}
+
 }
 
 function removeHTMLButton(){
@@ -140,7 +158,7 @@ function bet(amount, side){
 		console.log("Invalid side : " + side);
 		return;
 	}
-	console.log("Betting " + amount + "$ on " + side + " : " + getCharacter(side) + " on the match: " + getMatch()); 
+	console.log("Betting " + amount + "$ on " + side + " : " + getCharacter(side) + " on the match: " + getMatch());
 }
 
 function allIn(side){
@@ -196,7 +214,7 @@ function updateLastMatchData(){
 	if(lastMatch["red"] === p1n && lastMatch["blue"] === p2n){
 		return;
 	}
-	
+
 	lastMatch["red"] = p1n;
 	lastMatch["blue"] = p2n;
 	lastMatch["winner"] = winner;
@@ -255,6 +273,13 @@ function getPreference(key, defaultValue) {
 
 function getPreferenceBoolean(key, defaultValue) {
 	return (getPreference(key, defaultValue.toString()) == "true");
+}
+
+function removeExtraHTML(){
+	$('#sbettorswrapper').remove();
+	$('#stream').remove();
+	$('#chat-wrapper').remove();
+	$('#bottomcontent').width('100%');
 }
 
 
