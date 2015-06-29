@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.2.0
+// @version 1.2.1
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -120,7 +120,7 @@ function addHTMLButton(){
 	$("div#nav-menu > ul > li:first-child").before("<li id=\""+REMOVE_HTML_BUTTON_ID+"\">"+removeExtraHTMLButton+"</li>");
 	if(hideHTML){
 		$('#' + REMOVE_HTML_BUTTON_ID + " > div").click(function(){
-				window.location.reload(true);
+				window.location.reload();
 				setPreference("hideHTML", false);
 		});
 		$('#' + REMOVE_HTML_BUTTON_ID + " > div").text("Re-add extra html");
@@ -132,7 +132,7 @@ function addHTMLButton(){
 			$(this).text("Re-add extra html");
 			$(this).unbind("click");
 			$(this).click(function(){
-					window.location.reload(true);
+					window.location.reload();
 					setPreference("hideHTML", false);
 			});
 		});
