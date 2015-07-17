@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.2.1
+// @version 1.3.0
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -96,7 +96,7 @@ function removeCSS(){
 
 function addToggleButton(){
 	console.log("Appending toggle button");
-	$("div#nav-menu > ul > li:first-child").before("<li id=\""+TOGGLE_BUTTON_CONTAINER_ID+"\">"+buttonHTML+"</li>");
+	$("ul.nav > li:first-child").before("<li id=\""+TOGGLE_BUTTON_CONTAINER_ID+"\">"+buttonHTML+"</li>");
 	if(enabled){
 		$("#" + TOGGLE_BUTTON_ID).prop('checked', true);
 	}
@@ -117,7 +117,7 @@ function removeToggleButton(){
 
 function addHTMLButton(){
 	console.log("Appending HTML removal button");
-	$("div#nav-menu > ul > li:first-child").before("<li id=\""+REMOVE_HTML_BUTTON_ID+"\">"+removeExtraHTMLButton+"</li>");
+	$("ul.nav > li:first-child").before("<li id=\""+REMOVE_HTML_BUTTON_ID+"\">"+removeExtraHTMLButton+"</li>");
 	if(hideHTML){
 		$('#' + REMOVE_HTML_BUTTON_ID + " > div").click(function(){
 				window.location.reload();
