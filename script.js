@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.3.0
+// @version 1.3.1
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -13,6 +13,7 @@ var CSS_ID = "saltybetting-css",
 TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container",
 TOGGLE_BUTTON_ID = "saltybetting-toggle-button",
 REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button",
+PREDICTION_URL = "http://polls.thedreamsanctuary.com/saltybetting/getPrediction.php",
 cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css",
 isAlreadyRunning = false,
 enabled = getPreferenceBoolean("enableBetting",false),
@@ -51,6 +52,23 @@ function checkBettingStateChange(){
 			console.log("Disabled SaltyBetting Script");
 		}
 	}
+}
+
+function getPrediction(red, blue){
+	var dataObject = {
+		red: red,
+		blue: blue
+	}
+	$.ajax({ type: "POST",
+			 url: GET_PREDICTION_URL,
+			 data: dataObject,
+			 cache: false,
+			 success: function(response)
+			 {
+				console.log(response);
+			 }
+
+	});
 }
 
 function doTheThing() {
