@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.3.4
+// @version 1.3.5
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -13,7 +13,7 @@ var CSS_ID = "saltybetting-css",
 TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container",
 TOGGLE_BUTTON_ID = "saltybetting-toggle-button",
 REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button",
-PREDICTION_URL = "http://polls.thedreamsanctuary.com/saltybetting/getPrediction.php",
+PREDICTION_URL = "http://saltybetting.thedreamsanctuary.com/getPrediction.php",
 cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css",
 isAlreadyRunning = false,
 enabled = getPreferenceBoolean("enableBetting",false),
@@ -21,7 +21,7 @@ hideHTML = getPreferenceBoolean("hideHTML",false),
 lastMatch = {
 	red: "none",
 	blue: "none",
-	winner: "none"
+	winner: "none",
 };
 
 
@@ -65,7 +65,9 @@ function getPrediction(red, blue){
 			 cache: false,
 			 success: function(response)
 			 {
-				console.log(response);
+				 if(response.status=="success"){
+					 console.log("Prediction:" + response.prediction);
+				 }
 			 }
 
 	});
@@ -73,7 +75,6 @@ function getPrediction(red, blue){
 
 function doTheThing() {
 	updateLastMatchData();
-	//getPrediction(getCharacter("red"), getCharacter("blue"));
 	if(!enabled){
 		return;
 	}
@@ -81,6 +82,7 @@ function doTheThing() {
 		isAlreadyRunning = true;
 
 		if(!(bettingClosed() || playerHasBet())) {
+			getPrediction(getCharacter("red"), getCharacter("blue"));
 			if(isTournamentMode()) {
 				handleTournament();
 			}else{
