@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.3.7
+// @version 1.4
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -16,8 +16,14 @@ REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button",
 PREDICTION_URL = "http://saltybetting.thedreamsanctuary.com/getPrediction.php",
 cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css",
 isAlreadyRunning = false,
+baseBet = 1000,
+minBetValue = 10,
 enabled = getPreferenceBoolean("enableBetting",false),
 hideHTML = getPreferenceBoolean("hideHTML",false),
+prediction = {
+	side: "none",
+	odds: 0.5
+},
 lastMatch = {
 	red: "none",
 	blue: "none",
@@ -54,7 +60,7 @@ function checkBettingStateChange(){
 	}
 }
 
-function getPrediction(red, blue){
+function getPrediction(red, blue, doneFct){
 	var dataObject = {
 		red: red,
 		blue: blue
@@ -67,12 +73,20 @@ function getPrediction(red, blue){
 			 success: function(response)
 			 {
 				 if(response.status=="success"){
-					 console.log("Prediction:" + response.prediction);
+					 prediction.side = response.prediction;
+					 prediction.odds = response.odds;
+					 console.log("Prediction:" + response.prediction + ", Odds: " + response.odds);
 				 }else{
+					 prediction.side = "none";
+					 prediction.odds = 0.5;
 					 console.log("No Prediction : " + response.msg);
 				 }
+			 },
+			 complete: function(response){
+				 if(doneFct != null){
+					 doneFct();
+				 }
 			 }
-
 	});
 }
 
@@ -85,26 +99,37 @@ function doTheThing() {
 		isAlreadyRunning = true;
 
 		if(!(bettingClosed() || playerHasBet())) {
-			getPrediction(getCharacter("red"), getCharacter("blue"));
-			if(isTournamentMode()) {
-				handleTournament();
-			}else{
-				handleNormalMode();
-			}
+			getPrediction(getCharacter("red"), getCharacter("blue"), function(){
+				if(isTournamentMode()) {
+					handleTournament();
+				}else{
+					handleNormalMode();
+				}
+			});
 		}
-
 		isAlreadyRunning = false;
 	}
 }
 
 function handleNormalMode(){
-	bet(1, getRandomSide());
+	if(prediction != "none"){
+		var amount = Math.round(baseBet*prediction.odds);
+		amount = (amount < minBetValue) ? minBetValue : amount;
+		bet(amount, prediction.side);
+	}else{
+		bet(minBetValue, getRandomSide());
+	}
 }
 
 function handleTournament() {
-    console.log("Tournament mode - bets open and no bet by player yet");
-	console.log("Choosing random side");
-	var side = getRandomSide();
+  console.log("Tournament mode - bets open and no bet by player yet");
+	var side;
+	if(prediction != "none"){
+		side = prediction.side;
+	}else{
+		console.log("Choosing random side");
+		side = getRandomSide();
+	}
 	console.log("Side : " + side);
 	allIn(side);
 }
@@ -173,6 +198,7 @@ function bet(amount, side){
 		console.log("Betting is closed, aborting bet!");
 		return;
 	}
+	amount = (amount > balance) ? balance : amount;
 	$("#wager").val(amount);
 	if(side === "red"){
 		$('#player1').click();
