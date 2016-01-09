@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.4.2
+// @version 1.4.3
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -83,7 +83,8 @@ function getPrediction(red, blue, doneFct){
 				 }
 			 }
 	}).always(function(){
-		if(doneFct != null){
+		console.log("Done fetching prediction.");
+		if(doneFct != undefined){
 			doneFct();
 		}
 	});
