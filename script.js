@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.4.3
+// @version 1.4.4
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -99,7 +99,9 @@ function doTheThing() {
 		isAlreadyRunning = true;
 
 		if(!(bettingClosed() || playerHasBet())) {
+			console.log("Getting Prediction.");
 			getPrediction(getCharacter("red"), getCharacter("blue"), function(){
+				console.log("Done fetching prediction, betting.");
 				if(isTournamentMode()) {
 					handleTournament();
 				}else{
@@ -112,7 +114,7 @@ function doTheThing() {
 }
 
 function handleNormalMode(){
-	if(prediction != "none"){
+	if(prediction.side != "none"){
 		var amount = Math.round(baseBet*prediction.odds);
 		amount = (amount < minBetValue) ? minBetValue : amount;
 		bet(amount, prediction.side);
@@ -124,7 +126,7 @@ function handleNormalMode(){
 function handleTournament() {
   console.log("Tournament mode - bets open and no bet by player yet");
 	var side;
-	if(prediction != "none"){
+	if(prediction.side != "none"){
 		side = prediction.side;
 	}else{
 		console.log("Choosing random side");
