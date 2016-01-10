@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.4.7
+// @version 1.5
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -16,7 +16,7 @@ REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button",
 PREDICTION_URL = "http://saltybetting.thedreamsanctuary.com/getPrediction.php",
 cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css",
 isAlreadyRunning = false,
-baseBet = 1000,
+baseBet = 100,
 minBetValue = 10,
 enabled = getPreferenceBoolean("enableBetting",false),
 hideHTML = getPreferenceBoolean("hideHTML",false),
@@ -337,15 +337,16 @@ function removeExtraHTML(){
 }
 
 function setBaseBetValue(){
+	var modifier = 1;
 	if(balance > 10000000){ //10 million
-		baseBet = 100000;
+		modifier = 1000;
 	}else if(balance > 2000000){ //2 million
-		baseBet = 10000;
+		modifier = 100;
 	}else if(balance > 200000){ //200 k
-		baseBet = 1000;
-	}else{
-		baseBet = 100;
+		modifier = 10;
 	}
+	baseBet *= modifier;
+	minBetValue *= modifier;
 }
 
 function isLoggedIn(){
