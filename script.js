@@ -91,7 +91,7 @@ function getPrediction(red, blue, doneFct){
 
 function doTheThing() {
 	updateLastMatchData();
-	if(!enabled){
+	if(!(enabled && isLoggedIn())){
 		return;
 	}
     if(!isAlreadyRunning){
