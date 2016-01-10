@@ -136,7 +136,7 @@ function handleTournament() {
 		side = getRandomSide();
 	}
 	console.log("Side : " + side);
-	allIn(side);
+	bet(balance, side);
 }
 
 function addCSS(){
@@ -214,10 +214,6 @@ function bet(amount, side){
 		return;
 	}
 	console.log("Betting " + amount + "$ on " + side + " : " + getCharacter(side) + " on the match: " + getMatch());
-}
-
-function allIn(side){
-	bet(balance, side);
 }
 
 function bettingClosed() {
