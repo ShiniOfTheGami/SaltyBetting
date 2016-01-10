@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.4.6
+// @version 1.4.7
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -336,10 +336,26 @@ function removeExtraHTML(){
 	$('#bottomcontent').width('100%');
 }
 
+function setBaseBetValue(){
+	if(balance > 10000000){ //10 million
+		baseBet = 100000;
+	}else if(balance > 2000000){ //2 million
+		baseBet = 10000;
+	}else if(balance > 200000){ //200 k
+		baseBet = 1000;
+	}else{
+		baseBet = 100;
+	}
+}
+
+function isLoggedIn(){
+	return (balance != 0);
+}
 
 var setup = function(){
 	addCSS();
 	addToggleButton();
 	addHTMLButton();
+	setBaseBetValue();
 }();
 var thingTimer = window.setInterval(doTheThing, 1000);
