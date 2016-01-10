@@ -22,6 +22,7 @@
 .onoffswitch-inner:before {
     content: "SaltyBetting Script ON";
     padding-left: 10px;
+	text-align:center;
     background-color: #4C9AFF; color: #FFFFFF;
 }
 .onoffswitch-inner:after {
