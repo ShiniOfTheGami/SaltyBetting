@@ -347,6 +347,7 @@ function setBaseBetValue(){
 	}
 	baseBet *= modifier;
 	minBetValue *= modifier;
+	console.log("Modifier selected: " + modifier);
 }
 
 function isLoggedIn(){
