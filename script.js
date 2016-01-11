@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.5.2
+// @version 1.5.3
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -18,8 +18,8 @@ cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css",
 isAlreadyRunning = false,
 standardBaseBet = 100,
 standardMinBet = 10,
-baseBet = 100,
-minBetValue = 10,
+baseBet = standardBaseBet,
+minBetValue = standardMinBet,
 enabled = getPreferenceBoolean("enableBetting",false),
 hideHTML = getPreferenceBoolean("hideHTML",false),
 prediction = {
