@@ -2,7 +2,7 @@
 // @name ShiniOfTheGami's automated Tournament mode!
 // @namespace https://github.com/ShiniOfTheGami/SaltyBetting
 // @description A script that bets during saltybet tournaments for you.
-// @version 1.5.3
+// @version 1.5.4
 // @match *://www.saltybet.com
 // @grant none
 // @updateURL https://raw.githubusercontent.com/ShiniOfTheGami/SaltyBetting/master/script.js
@@ -14,6 +14,7 @@ TOGGLE_BUTTON_CONTAINER_ID = "saltybetting-toggle-button-container",
 TOGGLE_BUTTON_ID = "saltybetting-toggle-button",
 REMOVE_HTML_BUTTON_ID = "saltybetting-remove-html-button",
 PREDICTION_URL = "http://saltybetting.shini.coffee/getPrediction.php",
+SETTING_CATEGORY = "saltybetting-clientscript",
 cssURL = "http://rawgit.com/ShiniOfTheGami/SaltyBetting/master/script.css",
 isAlreadyRunning = false,
 standardBaseBet = 100,
@@ -305,7 +306,7 @@ function checkExists(element) {
 function setPreference(key, value) {
 	try {
 		if (localStorage !== undefined) {
-			localStorage.setItem('steamdb-minigame/' + key, value);
+			localStorage.setItem(SETTING_CATEGORY + "/" + key, value);
 		}
 	} catch (e) {
 		console.log(e); // silently ignore error
@@ -315,7 +316,7 @@ function setPreference(key, value) {
 function getPreference(key, defaultValue) {
 	try {
 		if (localStorage !== undefined) {
-			var result = localStorage.getItem('steamdb-minigame/' + key);
+			var result = localStorage.getItem(SETTING_CATEGORY + "/" + key);
 			return (result !== null ? result : defaultValue);
 		}
 	} catch (e) {
